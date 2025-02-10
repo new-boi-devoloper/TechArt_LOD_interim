@@ -6,7 +6,7 @@ public class PlayerInteractor : MonoBehaviour
     private Shader defaultShader;
     private GameObject lastHighlightedObject;
     public bool isInteracting;
-    public GameObject targetObject; // Объект, к которому тянется рука
+    public GameObject targetObject; 
 
     public void Interact(out GameObject interactionObject)
     {
@@ -26,19 +26,19 @@ public class PlayerInteractor : MonoBehaviour
                 }
 
                 interactionObject = hit.collider.gameObject;
-                targetObject = interactionObject; // Устанавливаем целевой объект для IK
-                isInteracting = true; // Включаем взаимодействие
+                targetObject = interactionObject; 
+                isInteracting = true; 
             }
             else
             {
                 ResetLastHighlighted();
-                isInteracting = false; // Выключаем взаимодействие
+                isInteracting = false; 
             }
         }
         else
         {
             ResetLastHighlighted();
-            isInteracting = false; // Выключаем взаимодействие
+            isInteracting = false; 
         }
     }
 

@@ -40,7 +40,6 @@ namespace KT.Scripts
             GameObject interactionObject;
             _playerInteractor.Interact(out interactionObject);
 
-            // Передаем целевой объект в PlayerAnimator
             if (interactionObject != null)
             {
                 Debug.Log("Interacting with: " + interactionObject.name);

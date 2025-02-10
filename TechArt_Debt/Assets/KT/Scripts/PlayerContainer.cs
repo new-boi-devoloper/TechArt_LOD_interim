@@ -14,7 +14,6 @@ namespace KT.Scripts
         public bool isInteracting { get; set; }
         public Camera PlayerCamera { get; set; }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
             PlayerCamera = Camera.main;

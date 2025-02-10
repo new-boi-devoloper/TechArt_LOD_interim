@@ -10,7 +10,7 @@ namespace KT.Scripts
         private string _currentAnimation;
 
         private Vector3 _currentPlayerMovement;
-        private bool _isAttacking; // Флаг для блокировки новой атаки
+        private bool _isAttacking; 
         private bool _isCurrentlyRunning;
         private readonly PlayerInteractor _playerInteractor;
 
@@ -26,54 +26,48 @@ namespace KT.Scripts
             _currentPlayerMovement = playerMovement;
             _isCurrentlyRunning = isRunning;
 
-            // Если текущая анимация пустая, просто выходим
             if (_currentAnimation == "")
             {
-                // Обработка прыжков и приземлений
                 HandleJumpAndLandAnimations(playerMovement, isRunning);
 
-                // Обработка бега, спринта и бездействия
                 HandleRunSprintIdleAnimations(playerMovement, isRunning);
             }
             
 
-            // Обработка прыжков и приземлений
             HandleJumpAndLandAnimations(playerMovement, isRunning);
 
-            // Обработка бега, спринта и бездействия
             HandleRunSprintIdleAnimations(playerMovement, isRunning);
         }
 
         private void HandleJumpAndLandAnimations(Vector3 playerMovement, bool isRunning)
         {
-            // Если игрок в прыжке
+
             if (_playerContainer.IsJumping)
             {
-                if (playerMovement is { x: 0, z: 0 }) // Прыжок из состояния покоя
+                if (playerMovement is { x: 0, z: 0 }) 
                     ChangeAnimation("Jump_Idle").Forget();
-                else if (isRunning) // Прыжок во время спринта
+                else if (isRunning) 
                     ChangeAnimation("Jump_Sprinting").Forget();
-                else // Прыжок во время бега
+                else 
                     ChangeAnimation("Jump_Running").Forget();
                 return;
             }
 
-            // Если игрок приземлился
+      
             if (_currentAnimation is "Jump_Idle" or "Jump_Running" or "Jump_Sprinting" &&
                 _playerContainer.PlayerController.isGrounded)
             {
-                if (playerMovement is { x: 0, z: 0 }) // Приземление в состояние покоя
+                if (playerMovement is { x: 0, z: 0 }) 
                     ChangeAnimation("Land_Idle").Forget();
-                else if (isRunning) // Приземление во время спринта
+                else if (isRunning) 
                     ChangeAnimation("Land_Sprinting").Forget();
-                else // Приземление во время бега
+                else 
                     ChangeAnimation("Land_Running").Forget();
             }
         }
 
         private void HandleRunSprintIdleAnimations(Vector3 playerMovement, bool isRunning)
         {
-            // Если игрок не в прыжке и не приземляется
             if (!_playerContainer.IsJumping && _playerContainer.PlayerController.isGrounded)
             {
                 if (isRunning && playerMovement is not { x: 0, z: 0 })
@@ -82,7 +76,6 @@ namespace KT.Scripts
                 }
                 else if (!isRunning && playerMovement is not { x: 0, z: 0 })
                 {
-                    // Определяем направление движения и выбираем соответствующую анимацию
                     if (playerMovement.z < 0 && playerMovement.x < 0)
                         ChangeAnimation("Run_BckStrafeBL").Forget();
                     else if (playerMovement.z < 0 && playerMovement.x > 0)
@@ -109,17 +102,14 @@ namespace KT.Scripts
         {
             if (_playerInteractor.isInteracting && _playerInteractor.targetObject != null)
             {
-                // Устанавливаем вес для IK
                 _playerContainer.PlayerAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                 _playerContainer.PlayerAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
 
-                // Устанавливаем позицию и вращение для правой руки
                 _playerContainer.PlayerAnimator.SetIKPosition(AvatarIKGoal.RightHand, _playerInteractor.targetObject.transform.position);
                 _playerContainer.PlayerAnimator.SetIKRotation(AvatarIKGoal.RightHand, _playerInteractor.targetObject.transform.rotation);
             }
             else
             {
-                // Сбрасываем вес IK, если взаимодействие не активно
                 _playerContainer.PlayerAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
                 _playerContainer.PlayerAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
             }
@@ -127,7 +117,7 @@ namespace KT.Scripts
 
         public async UniTask ChangeAnimation(string animation, float crossFade = 0.1f, float time = 0f)
         {
-            if (time > 0) await UniTask.Delay((int)((time - crossFade) * 1000)); // Ждем указанное время в миллисекундах
+            if (time > 0) await UniTask.Delay((int)((time - crossFade) * 1000)); 
 
             if (_currentAnimation != animation)
             {
